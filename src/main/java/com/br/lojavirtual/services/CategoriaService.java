@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.br.lojavirtual.domain.Categoria;
 import com.br.lojavirtual.repositories.CategoriaRepository;
+import com.br.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -14,14 +15,10 @@ public class CategoriaService {
 	@Autowired
 	private  CategoriaRepository repo;
 	
-	/*
-	 * public Categoria buscar(Integer id) { Categoria obj = repo.findOne(id);
-	 * return obj; }
-	 */
 	
-	public Categoria buscar(Integer id) { 
-		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElse(null);
+	public Categoria find(Integer id) { 
+		Optional<Categoria> obj = repo.findById(id); 
+		return obj.orElseThrow(() -> new ObjectNotFoundException(    "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())); 
 		}
 	
 	
