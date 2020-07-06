@@ -1,11 +1,12 @@
-package com.br.tubatuba.resources;
+package com.br.lojavirtual.resources;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.br.tubatuba.domain.Categoria;
+
+import com.br.lojavirtual.domain.Categoria;
 
 @RestController
 @RequestMapping(value ="/categorias")

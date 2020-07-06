@@ -1,4 +1,4 @@
-package com.br.tubatuba.domain;
+package com.br.lojavirtual.domain;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
