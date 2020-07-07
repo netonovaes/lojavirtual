@@ -1,23 +1,32 @@
 package com.br.lojavirtual;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import com.br.lojavirtual.domain.Categoria;
 import com.br.lojavirtual.domain.Cidade;
 import com.br.lojavirtual.domain.Cliente;
 import com.br.lojavirtual.domain.Endereco;
 import com.br.lojavirtual.domain.Estado;
+import com.br.lojavirtual.domain.Pagamento;
+import com.br.lojavirtual.domain.PagamentoComBoleto;
+import com.br.lojavirtual.domain.PagamentoComCartao;
+import com.br.lojavirtual.domain.Pedido;
 import com.br.lojavirtual.domain.Produto;
+import com.br.lojavirtual.domain.enums.EstadoPagamento;
 import com.br.lojavirtual.domain.enums.TipoCliente;
 import com.br.lojavirtual.repositories.CategoriaRepository;
 import com.br.lojavirtual.repositories.CidadeRepository;
 import com.br.lojavirtual.repositories.ClienteRepository;
 import com.br.lojavirtual.repositories.EnderecoRepository;
 import com.br.lojavirtual.repositories.EstadoRepository;
+import com.br.lojavirtual.repositories.PagamentoRepository;
+import com.br.lojavirtual.repositories.PedidoRepository;
 import com.br.lojavirtual.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -35,6 +44,10 @@ public class LojaVirtualApplication implements CommandLineRunner{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LojaVirtualApplication.class, args);
@@ -91,6 +104,24 @@ public class LojaVirtualApplication implements CommandLineRunner{
 		  clienteRepository.saveAll(Arrays.asList(cli1));
 		  enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		  
+		//Associação dos pedidos e pagamentos ao cliente e  cliente a seus pedidos e pagamentos
+		  
+		  
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+ 		  
+		  Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		  Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		  
+		  Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		  ped1.setPagamento(pagto1);
+		  
+		  Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),null);
+		  ped2.setPagamento(pagto2);
+		  
+		  cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		  
+		  pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		  pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 	}
 		
 } 
