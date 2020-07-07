@@ -9,3 +9,24 @@ Layered development and exception handling. The layer structure of the back end 
 Implementation:
 Implementation of the following conceptual model.
 Instance Conceptual Model Diagram
+
+
+
+Technologies:
+Java 8
+Rest with SpringBoot 2
+H2 memory database
+JPA
+Maven
+
+
+Link Data Base:
+
+http://localhost:8080/h2-console/
+
+Retrieve the data and make it available through a Rest API. The following end points must be made available:
+ 
+Endpoints
+/ categorias / {id} Category and its products
+/ clientes / {id} Customer, their phones and addresses
+/ pedidos / {id} Order, your customer, your payment, your order items, your shipping address
