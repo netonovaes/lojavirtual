@@ -1,10 +1,10 @@
-package com.br.tubatuba;
+package com.br.lojavirtual;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TubatubaApplicationTests {
+class LojavirtualApplicationTests {
 
 	@Test
 	void contextLoads() {
