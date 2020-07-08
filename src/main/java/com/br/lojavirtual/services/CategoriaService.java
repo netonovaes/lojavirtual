@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.br.lojavirtual.domain.Categoria;
+import com.br.lojavirtual.dto.CategoriaDTO;
 import com.br.lojavirtual.repositories.CategoriaRepository;
 import com.br.lojavirtual.services.exceptions.DataIntegrityException;
 import com.br.lojavirtual.services.exceptions.ObjectNotFoundException;
@@ -22,10 +23,11 @@ public class CategoriaService {
 	private  CategoriaRepository repo;
 	
 	
-	public Categoria find(Integer id) { 
-		Optional<Categoria> obj = repo.findById(id); 
-		return obj.orElseThrow(() -> new ObjectNotFoundException(    "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())); 
-		}
+	public Categoria find(Integer id) {
+		Optional<Categoria> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+	}
 	//Metodo de inserir
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
@@ -33,9 +35,11 @@ public class CategoriaService {
 	}
 	// Metodo updade
 	public Categoria update(Categoria obj) {
-		find(obj.getId());// verifica se o objeto existe e lança uma exceção  personalizada do metodo find
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());// verifica se o objeto existe e lança uma exceção  personalizada do metodo find
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
+	
 	//Metodo delete
 	public void delete(Integer id) {
 		
@@ -53,8 +57,16 @@ public class CategoriaService {
 		return repo.findAll();
 		
 	}
-	public  Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy,String direction){
-			PageRequest pageRequest = PageRequest.of(page,linesPerPage,Direction.valueOf(direction), orderBy);
-			return repo.findAll(pageRequest);
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
 	}
+	//Instancia um objeto categoria a partir de um DTO
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	}
+	
 }
