@@ -3,10 +3,12 @@ package com.br.lojavirtual.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.br.lojavirtual.domain.Categoria;
 import com.br.lojavirtual.repositories.CategoriaRepository;
+import com.br.lojavirtual.services.exceptions.DataIntegrityException;
 import com.br.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,5 +32,20 @@ public class CategoriaService {
 		find(obj.getId());// verifica se o objeto existe e lança uma exceção  personalizada do metodo find
 		return repo.save(obj);
 	}
+	//Metodo delete
+	public void delete(Integer id) {
+		
+		find(id);// verifica se o objeto existe e lança uma exceção  personalizada do metodo find
+		
+		try {
+		repo.deleteById(id);
+	}
+	 catch (DataIntegrityViolationException e) {
+	    throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");	 
+	 
+	 }
+		
+		
+	 }
 	
 }
